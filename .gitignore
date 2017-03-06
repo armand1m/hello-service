@@ -1,5 +1,2 @@
-node_modules/
-data/
-test-data/
-build/
-npm-debug.log
+service/node_modules/
+*.log

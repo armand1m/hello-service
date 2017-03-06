@@ -24,3 +24,16 @@ services:
       service: fabio_service
     links:
       - consul
+
+  registrator:
+    extends:
+      file: ./core-services/services.yml
+      service: registrator_service
+    depends_on:
+      - consul
+    links:
+      - consul
+
+networks:
+  default:
+    driver: overlay

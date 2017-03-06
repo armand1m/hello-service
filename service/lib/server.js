@@ -1,46 +1,31 @@
 const micro = require('micro')
 const service = require('./service')
-
 const Info = require('./info')
 const Events = require('./events')
-const ConsulAgentService = require('./consul').agent.service
 
 class Server {
   async start() {
     try {
       await micro(service).listen(Info.port)
-      await Events.onServerRunning(Info.uri)
 
-      await this.register()
-      await Events.onServiceRegistered()
+      Events.onServerRunning(Info.uri)
 
-      await this.setTerminationHandlers()
+      this.setTerminationHandlers()
     } catch (e) {
-      await Events.onServiceRegisterError(e)
+      Events.doErrorExit(e)
     }
   }
 
-  async terminate() {
+  terminate() {
     try {
-      await instance.unregister()
-
-      await Events.onServiceUnregistered()
-      await Events.doSafeExit()
+      Events.doSafeExit()
     } catch (e) {
-      await Events.onServiceUnregisterError(e)
+      Events.doErrorExit(e)
     }
   }
 
-  async register() {
-    return ConsulAgentService.register(Info.description)
-  }
-
-  async unregister() {
-    return ConsulAgentService.deregister(Info.description.name)
-  }
-
-  async setTerminationHandlers() {
-    ['SIGINT', 'SIGTERM', 'SIGUSR2', 'SIGHUP'].forEach(signal => process.on(signal, this.terminate))
+  setTerminationHandlers() {
+    ['SIGINT', 'SIGTERM', 'SIGUSR2'].forEach(signal => process.on(signal, this.terminate))
   }
 }
 

@@ -5,17 +5,10 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "start": "node --harmony-async-await index.js",
-    "start:watch": "nodemon index.js",
-    "test": "",
-    "test:watch": ""
+    "start": "node --harmony-async-await index.js"
   },
   "dependencies": {
-    "consul": "^0.28.0",
     "micro": "^7.0.6",
     "microrouter": "^2.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^1.11.0"
   }
 }

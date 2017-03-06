@@ -23,3 +23,9 @@ services:
       - "9998:9998"
     volumes:
       - ./fabio_service/fabio.properties:/etc/fabio/fabio.properties
+
+  registrator_service:
+    image: gliderlabs/registrator:latest
+    command: -internal consul://consul:8500
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock

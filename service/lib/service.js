@@ -3,17 +3,17 @@ const { router, get } = require('microrouter')
 
 const Info = require('./info')
 
-const hello = async (req, res) => {
-  return send(res, 200, await Promise.resolve(`Hello ${req.params.who}: ${Info.host}`))
-}
+const hello = (req, res) => send(res, 200, `Hello ${ req.params.who }: ${ Info.host }`)
 
-const health = async (req, res) => {
-  return send(res, 200, {
-    status: "healthy"
-  })
-}
+const health = (req, res) => send(res, 200, { status: "healthy" })
+
+const main = (req, res) => send(res, 200, { uri: Info.uri })
+
+const notFound = (req, res) => send(res, 404, 'Not found route')
 
 module.exports = router(
-  get('/:who', hello),
-  get('/health', health)
+  get('/', main),
+  get(`/api/:who`, hello),
+  get(`/api/health`, health),
+  get('/*', notFound)
 )
