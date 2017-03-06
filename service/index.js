@@ -1,3 +1,1 @@
-const Server = require('./lib/server')
-
-new Server().start()
+module.exports = require('./lib/service')

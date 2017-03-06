@@ -1,19 +1,15 @@
 const { send } = require('micro')
 const { router, get } = require('microrouter')
 
-const Info = require('./info')
-
-const hello = (req, res) => send(res, 200, `Hello ${ req.params.who }: ${ Info.host }`)
+const { uri, status } = require('./info')
 
 const health = (req, res) => send(res, 200, { status: "healthy" })
-
-const main = (req, res) => send(res, 200, { uri: Info.uri })
-
-const notFound = (req, res) => send(res, 404, 'Not found route')
+const main = (req, res) => send(res, 200, { uri })
+const notFound = (req, res) => send(res, 404, { error: 404, message: "route not found" })
 
 module.exports = router(
-  get('/', main),
-  get(`/api/:who`, hello),
-  get(`/api/health`, health),
-  get('/*', notFound)
+  get('/hello/:who', (req, res) => req.params),
+  get('/health', health),
+  get('/*', notFound),
+  get('/', main)
 )

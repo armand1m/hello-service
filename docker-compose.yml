@@ -33,7 +33,3 @@ services:
       - consul
     links:
       - consul
-
-networks:
-  default:
-    driver: overlay

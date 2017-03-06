@@ -6,14 +6,18 @@ module.exports = class Info {
   }
 
   static get name() {
-    return process.env.SERVICE_80_NAME
+    return process.env.SERVICE_NAME
   }
 
   static get port() {
-    return +process.env.SERVICE_PORT || 3000
+    return +process.env.SERVICE_PORT
   }
 
   static get uri() {
     return `http://${Info.host}:${Info.port}`
+  }
+
+  static get status() {
+    return "healthy"
   }
 }
