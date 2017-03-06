@@ -3,7 +3,7 @@ const tagPrefix = prefix => `urlprefix-${prefix}`
 
 const SPLITTED_PREFIX = process.env.PREFIXES.split(",")
 
-module.exports = class Info {
+class Info {
   static get host() {
     return os.hostname()
   }
@@ -35,9 +35,11 @@ module.exports = class Info {
       port: Info.port,
       tags: Info.tags,
       check: {
-        http: `${Info.uri}/health`,
+        http: `${Info.uri}/_v1/health`,
         interval: '10s'
       }
     }
   }
 }
+
+module.exports = Info

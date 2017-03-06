@@ -1,33 +1,31 @@
-const onServiceRegistered = async () => {
+const onServiceRegistered = () => {
   console.log("Server registered for Service Discovery.")
 }
 
-const onServiceUnregistered = async () => {
+const onServiceUnregistered = () => {
   console.log("Server unregistered from Service Discovery.")
 }
 
-const onServerRunning = async (uri) => {
+const onServerRunning = (uri) => {
   console.log(`Server running at: ${uri}`)
 }
 
-const doSafeExit = async () => {
+const doSafeExit = () => {
   console.log("Service was gracefully terminated.")
   return process.exit(0)
 }
 
-const doErrorExit = async (err) => {
+const doErrorExit = (err) => {
   console.error(err)
   return process.exit(1)
 }
 
-const onServiceRegisterError = async (err) => {
+const onServiceRegisterError = (err) => {
   console.error("Can't register for Service Discovery.")
-  await doErrorExit(err)
 }
 
-const onServiceUnregisterError = async (err) => {
+const onServiceUnregisterError = (err) => {
   console.error("Can't unregister from Service Discovery.")
-  await doErrorExit(err)
 }
 
 module.exports = {

@@ -4,7 +4,7 @@ const { router, get } = require('microrouter')
 const Info = require('./info')
 
 const hello = async (req, res) => {
-  return send(res, 200, await Promise.resolve(`Hello ${req.params.who}: ${Info.host}`))
+  return send(res, 200, await Promise.resolve(`Hello to ${Info.host}, ${req.params.who}!`))
 }
 
 const health = async (req, res) => {
@@ -14,6 +14,6 @@ const health = async (req, res) => {
 }
 
 module.exports = router(
-  get('/:who', hello),
-  get('/health', health)
+  get('/_v1/:who', hello),
+  get('/_v1/health', health)
 )

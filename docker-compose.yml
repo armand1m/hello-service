@@ -6,8 +6,6 @@ services:
     restart: always
     ports:
       - 80
-    volumes:
-      - ./service:/src/service
     depends_on:
       - consul
     links:

@@ -9,25 +9,31 @@ class Server {
   async start() {
     try {
       await micro(service).listen(Info.port)
-      await Events.onServerRunning(Info.uri)
-
-      await this.register()
-      await Events.onServiceRegistered()
-
-      await this.setTerminationHandlers()
+      Events.onServerRunning(Info.uri)
     } catch (e) {
-      await Events.onServiceRegisterError(e)
+      Events.doErrorExit(err)
+    }
+
+    try {
+      await this.register()
+      Events.onServiceRegistered()
+
+      this.setTerminationHandlers()
+    } catch (e) {
+      Events.onServiceRegisterError(e)
+      Events.doErrorExit(err)
     }
   }
 
   async terminate() {
     try {
-      await instance.unregister()
+      await instance.deregister()
 
-      await Events.onServiceUnregistered()
-      await Events.doSafeExit()
+      Events.onServiceUnregistered()
+      Events.doSafeExit()
     } catch (e) {
-      await Events.onServiceUnregisterError(e)
+      Events.onServiceUnregisterError(e)
+      Events.doErrorExit(err)
     }
   }
 
@@ -35,11 +41,11 @@ class Server {
     return ConsulAgentService.register(Info.description)
   }
 
-  async unregister() {
+  async deregister() {
     return ConsulAgentService.deregister(Info.description.name)
   }
 
-  async setTerminationHandlers() {
+  setTerminationHandlers() {
     ['SIGINT', 'SIGTERM', 'SIGUSR2', 'SIGHUP'].forEach(signal => process.on(signal, this.terminate))
   }
 }
