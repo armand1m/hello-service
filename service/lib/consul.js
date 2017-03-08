@@ -1,5 +1,3 @@
-module.exports = require('consul')({
-  host: process.env.CONSUL_HOST,
-  port: process.env.CONSUL_PORT,
-  promisify: true
-})
+const { consul } = require('./info')
+
+module.exports = require('consul')(consul.configuration)

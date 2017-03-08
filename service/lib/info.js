@@ -1,7 +1,7 @@
 const os = require('os')
-const tagPrefix = prefix => `urlprefix-${prefix}`
+const toTaggedPrefix = prefix => `urlprefix-${prefix}`
 
-const SPLITTED_PREFIX = process.env.PREFIXES.split(",")
+const SPLITTED_PREFIXES = process.env.PREFIXES.split(",")
 
 class Info {
   static get host() {
@@ -17,26 +17,37 @@ class Info {
   }
 
   static get prefixes() {
-    return SPLITTED_PREFIX
+    return SPLITTED_PREFIXES
   }
 
   static get tags() {
-    return SPLITTED_PREFIX.map(tagPrefix)
+    return SPLITTED_PREFIXES.map(toTaggedPrefix)
   }
 
   static get uri() {
     return `http://${Info.host}:${Info.port}`
   }
 
-  static get description() {
+  static get check() {
     return {
-      name: `${Info.name}:${Info.host}`,
-      address: Info.host,
-      port: Info.port,
-      tags: Info.tags,
-      check: {
-        http: `${Info.uri}/_v1/health`,
-        interval: '10s'
+      http: `${Info.uri}/${Info.name}/health`,
+      interval: '10s'
+    }
+  }
+
+  static get consul() {
+    return {
+      configuration: {
+        host: process.env.CONSUL_HOST,
+        port: process.env.CONSUL_PORT,
+        promisify: true
+      },
+      description: {
+        name: `${Info.name}:${Info.host}`,
+        address: Info.host,
+        port: Info.port,
+        tags: Info.tags,
+        check: Info.check
       }
     }
   }

@@ -27,7 +27,7 @@ class Server {
 
   async terminate() {
     try {
-      await instance.deregister()
+      await this.deregister()
 
       Events.onServiceUnregistered()
       Events.doSafeExit()
@@ -38,11 +38,11 @@ class Server {
   }
 
   async register() {
-    return ConsulAgentService.register(Info.description)
+    return ConsulAgentService.register(Info.consul.description)
   }
 
   async deregister() {
-    return ConsulAgentService.deregister(Info.description.name)
+    return ConsulAgentService.deregister(Info.consul.description.name)
   }
 
   setTerminationHandlers() {
