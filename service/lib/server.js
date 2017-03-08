@@ -7,18 +7,25 @@ const ConsulAgentService = require('./consul').agent.service
 
 class Server {
   async start() {
+    await this.tryToStartServer()
+    await this.tryToRegister()
+  }
+
+  async tryToStartServer() {
     try {
       await micro(service).listen(Info.port)
       Events.onServerRunning(Info.uri)
     } catch (e) {
       Events.doErrorExit(err)
     }
-
+  }
+  
+  async tryToRegister() {
     try {
       await this.register()
-      Events.onServiceRegistered()
 
-      this.setTerminationHandlers()
+      Events.onServiceRegistered()
+      Events.whenServerShutdown(this.terminate)
     } catch (e) {
       Events.onServiceRegisterError(e)
       Events.doErrorExit(err)
@@ -43,10 +50,6 @@ class Server {
 
   async deregister() {
     return ConsulAgentService.deregister(Info.consul.description.name)
-  }
-
-  setTerminationHandlers() {
-    ['SIGINT', 'SIGTERM', 'SIGUSR2', 'SIGHUP'].forEach(signal => process.on(signal, this.terminate))
   }
 }
 
