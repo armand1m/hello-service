@@ -1,11 +1,9 @@
 version: '2'
 services:
   service:
-    build: ./service
-    env_file: ./properties.env
-    restart: always
-    ports:
-      - 80
+    extends:
+      file: ./service.yml
+      service: service
     depends_on:
       - consul
     links:

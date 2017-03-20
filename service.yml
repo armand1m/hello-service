@@ -1,0 +1,9 @@
+version: '2'
+services:
+  service:
+    build: ./service
+    image: armand1m/hello-service
+    env_file: ./properties.env
+    restart: unless-stopped
+    ports:
+      - 80
