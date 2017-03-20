@@ -8,8 +8,9 @@
     "start": "node --harmony-async-await index.js"
   },
   "dependencies": {
-    "consul": "^0.28.0",
     "micro": "^7.0.6",
-    "microrouter": "^2.0.0"
+    "microrouter": "^2.0.0",
+    "microservice-info": "^1.0.2",
+    "microservice-wrapper": "^1.0.0"
   }
 }
